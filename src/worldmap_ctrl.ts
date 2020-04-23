@@ -29,6 +29,8 @@ const panelDefaults = {
   unitPlural: "",
   showLegend: true,
   mouseWheelZoom: false,
+  showCircle: false,
+  showPath: false,
   esMetric: "Count",
   decimals: 0,
   hideEmpty: false,
@@ -260,6 +262,20 @@ export default class WorldmapCtrl extends MetricsPanelCtrl {
     this.render();
   }
 
+  showCircle(){
+    if (!this.panel.showCircle) {
+      this.map.clearCircles();
+    }
+    this.render();
+  }
+  showPath(){
+    if (!this.panel.showPath) {
+      this.map.clearPaths();
+    }
+    this.render();
+  }
+
+
   toggleMouseWheelZoom() {
     this.map.setMouseWheelZoom();
     this.render();
@@ -341,7 +357,13 @@ export default class WorldmapCtrl extends MetricsPanelCtrl {
         ctrl.map.createLegend();
       }
 
-      ctrl.map.drawCircles();
+      if (ctrl.panel.showCircle) {
+        ctrl.map.drawCircles();
+      }
+      if (ctrl.panel.showPath) {
+        ctrl.map.drawPaths();
+      }
+
     }
   }
 }

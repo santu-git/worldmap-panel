@@ -1,7 +1,7 @@
 import * as _ from 'lodash';
 import decodeGeoHash from './geohash';
 import kbn from 'grafana/app/core/utils/kbn';
-
+import polyline from '@mapbox/polyline';
 export default class DataFormatter {
   constructor(private ctrl) {}
 
@@ -156,11 +156,11 @@ export default class DataFormatter {
         datapoints.push(datapoint);
       });
     }
-
     return datapoints;
   }
 
   setTableValues(tableData, data) {
+    console.log(tableData,data)
     if (tableData && tableData.length > 0) {
       let highestValue = 0;
       let lowestValue = Number.MAX_VALUE;
@@ -188,6 +188,7 @@ export default class DataFormatter {
           locationName: datapoint[this.ctrl.panel.tableQueryOptions.labelField] || 'n/a',
           locationLatitude: latitude,
           locationLongitude: longitude,
+          path: polyline.decode(datapoint[this.ctrl.panel.tableQueryOptions.pathField]),
           value: datapoint[this.ctrl.panel.tableQueryOptions.metricField],
           valueFormatted: datapoint[this.ctrl.panel.tableQueryOptions.metricField],
           valueRounded: 0,
@@ -202,6 +203,7 @@ export default class DataFormatter {
         }
 
         dataValue.valueRounded = kbn.roundValue(dataValue.value, this.ctrl.panel.decimals || 0);
+        console.log(dataValue);
         data.push(dataValue);
       });
 

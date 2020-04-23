@@ -23,9 +23,11 @@ export default class WorldMap {
   ctrl: WorldmapCtrl;
   mapContainer: any;
   circles: any[];
+  paths: any[];
   map: any;
   legend: any;
   circlesLayer: any;
+  pathsLayer: any;
 
   constructor(ctrl, mapContainer) {
     this.ctrl = ctrl;
@@ -188,6 +190,37 @@ export default class WorldMap {
     return circleSizeRange * dataFactor + circleMinSize;
   }
 
+  clearPaths() {
+    if (this.pathsLayer) {
+      this.pathsLayer.clearLayers();
+      this.removePaths();
+      this.paths = [];
+    }
+  }
+  drawPaths(){
+    const data = this.filterEmptyAndZeroValues(this.ctrl.data);
+    this.createPaths(data);
+  }
+
+  createPaths(data){
+    const paths: any[] = [];
+    data.forEach(dataPoint => {
+      if (!dataPoint.locationName) {
+        return;
+      }
+      paths.push(this.createPath(dataPoint));
+    });
+    this.pathsLayer = this.addPaths(paths);
+    this.paths = paths;
+  }
+
+  createPath(dataPoint){
+    console.log(dataPoint);
+    const path = (<any>window).L.polyline(dataPoint.path, {color: 'red'})
+    this.createPopup(path, dataPoint.locationName, dataPoint.valueRounded);
+    return path;
+  }
+
   createPopup(circle, locationName, value) {
     const unit = value && value === 1 ? this.ctrl.panel.unitSingular : this.ctrl.panel.unitPlural;
     const label = (locationName + ': ' + value + ' ' + (unit || '')).trim();
@@ -245,9 +278,17 @@ export default class WorldMap {
     return (<any>window).L.layerGroup(circles).addTo(this.map);
   }
 
+  addPaths(paths){
+    return (<any>window).L.layerGroup(paths).addTo(this.map);
+  }
   removeCircles() {
     this.map.removeLayer(this.circlesLayer);
   }
+
+  removePaths() {
+    this.map.removeLayer(this.pathsLayer);
+  }
+
 
   setZoom(zoomFactor) {
     this.map.setZoom(parseInt(zoomFactor, 10));

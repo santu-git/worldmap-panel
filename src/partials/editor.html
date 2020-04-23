@@ -45,6 +45,8 @@
     </div>
     <gf-form-switch class="gf-form" label="Show Legend" label-class="width-10" checked="ctrl.panel.showLegend" on-change="ctrl.toggleLegend()"></gf-form-switch>
     <gf-form-switch class="gf-form" label="Mouse Wheel Zoom" label-class="width-10" checked="ctrl.panel.mouseWheelZoom" on-change="ctrl.toggleMouseWheelZoom()"></gf-form-switch>
+    <gf-form-switch class="gf-form" label="Show Circle" label-class="width-10" checked="ctrl.panel.showCircle" on-change="ctrl.showCircle()"></gf-form-switch>
+    <gf-form-switch class="gf-form" label="Show Path" label-class="width-10" checked="ctrl.panel.showPath" on-change="ctrl.showPath()"></gf-form-switch>
   </div>
   <div class="section gf-form-group">
     <h5 class="section-heading">Map Data Options</h5>
@@ -156,6 +158,11 @@
       <input type="text" class="input-small gf-form-input width-10" ng-model="ctrl.panel.tableQueryOptions.metricField" ng-change="ctrl.refresh()"
         ng-model-onblur />
     </div>
+    <div class="gf-form" ng-show="ctrl.panel.locationData === 'table'">
+      <label class="gf-form-label width-12">Path Field</label>
+      <input type="text" class="input-small gf-form-input width-10" ng-model="ctrl.panel.tableQueryOptions.pathField" ng-change="ctrl.refresh()"
+        ng-model-onblur />
+    </div>
     <div class="gf-form" ng-show="ctrl.showTableGeohashOptions()">
       <label class="gf-form-label width-12">Geohash Field</label>
       <input type="text" class="input-small gf-form-input width-10" ng-model="ctrl.panel.tableQueryOptions.geohashField" ng-change="ctrl.refresh()"
@@ -171,6 +178,7 @@
       <input type="text" class="input-small gf-form-input width-10" ng-model="ctrl.panel.tableQueryOptions.longitudeField" ng-change="ctrl.refresh()"
         ng-model-onblur />
     </div>
+
     <div class="gf-form" ng-show="ctrl.panel.locationData === 'geohash'">
       <label class="gf-form-label width-12">Location Name Field</label>
       <input type="text" class="input-small gf-form-input width-10" ng-model="ctrl.panel.esLocationName" ng-change="ctrl.refresh()"
@@ -185,6 +193,11 @@
       <label class="gf-form-label width-12">Metric Field</label>
       <input type="text" class="input-small gf-form-input width-10" ng-model="ctrl.panel.esMetric" ng-change="ctrl.refresh()" ng-model-onblur
       />
+    </div>
+    <div class="gf-form" ng-show="ctrl.panel.locationData === 'geohash'">
+      <label class="gf-form-label width-12">Path Field</label>
+      <input type="text" class="input-small gf-form-input width-10" ng-model="ctrl.panel.tableQueryOptions.pathField" ng-change="ctrl.refresh()"
+        ng-model-onblur />
     </div>
   </div>
 
