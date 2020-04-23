@@ -99,7 +99,6 @@ export default class WorldMap {
     }
 
     const locations = _.map(_.map(this.circles, 'options'), 'location').sort();
-    console.log(locations,dataPoints);
     const dataPoints = _.map(data, 'key').sort();
     return !_.isEqual(locations, dataPoints);
   }
