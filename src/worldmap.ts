@@ -99,9 +99,23 @@ export default class WorldMap {
     }
 
     const locations = _.map(_.map(this.circles, 'options'), 'location').sort();
+    console.log(locations,dataPoints);
     const dataPoints = _.map(data, 'key').sort();
     return !_.isEqual(locations, dataPoints);
   }
+
+  /*needToRedrawPaths(data){
+    if (this.paths.length === 0 && data.length > 0) {
+      return true;
+    }
+
+    if (this.circles.length !== data.length) {
+      return true;
+    }
+    const locations = _.map(_.map(this.paths, 'options'), 'location').sort();
+    const dataPoints = _.map(data, 'key').sort();
+    return !_.isEqual(locations, dataPoints);
+  }*/
 
   filterEmptyAndZeroValues(data) {
     return _.filter(data, o => {
@@ -199,7 +213,14 @@ export default class WorldMap {
   }
   drawPaths(){
     const data = this.filterEmptyAndZeroValues(this.ctrl.data);
+    this.clearPaths();
     this.createPaths(data);
+    // if (this.needToRedrawPaths(data)) {
+    //   this.clearPaths();
+    //   this.createPaths(data);
+    // } else {
+    //   this.updateCircles(data);
+    // }
   }
 
   createPaths(data){
@@ -215,8 +236,7 @@ export default class WorldMap {
   }
 
   createPath(dataPoint){
-    console.log(dataPoint);
-    const path = (<any>window).L.polyline(dataPoint.path, {color: 'red'})
+    const path = (<any>window).L.polyline(dataPoint.path, {color: this.getColor(dataPoint.value)})
     this.createPopup(path, dataPoint.locationName, dataPoint.valueRounded);
     return path;
   }

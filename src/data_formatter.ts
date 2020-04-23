@@ -160,7 +160,6 @@ export default class DataFormatter {
   }
 
   setTableValues(tableData, data) {
-    console.log(tableData,data)
     if (tableData && tableData.length > 0) {
       let highestValue = 0;
       let lowestValue = Number.MAX_VALUE;
@@ -203,7 +202,6 @@ export default class DataFormatter {
         }
 
         dataValue.valueRounded = kbn.roundValue(dataValue.value, this.ctrl.panel.decimals || 0);
-        console.log(dataValue);
         data.push(dataValue);
       });
 
